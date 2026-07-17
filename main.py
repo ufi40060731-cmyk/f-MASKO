@@ -9,18 +9,74 @@ from datetime import datetime
 st.set_page_config(layout="wide", page_title="F-mask 運維極簡預測面板")
 
 # ==========================================
-# 2. 側邊欄控制（把語言與黑夜主題補回來）
+# 2. 側邊欄控制（含語言、主題、檔案上傳與手動新增）
 # ==========================================
 with st.sidebar:
     st.title("⚙️ 控制中心")
-    # 補回泰文選項
+    # 選擇語言
     selected_lang = st.radio("🌐 選擇語言 / Language / ภาษา", ["繁體中文", "English", "ภาษาไทย"])
     # 網頁外觀切換
     theme_mode = st.radio("🌓 介面主題", ["☀️ 白天模式 (Light)", "🌙 黑夜模式 (Dark)"])
     st.divider()
+    
+    # 檔案上傳
     uploaded_file = st.file_uploader("📂 請上傳 GEM 更換紀錄 Excel (.xlsx)", type=["xlsx"])
+    st.divider()
 
-# 根據選擇的主題，動態注入 CSS 去改變全網頁的底色與文字顏色，實現真黑夜模式
+    # 2.5 手動新增維修紀錄區塊
+    st.subheader("➕ 手動新增維修紀錄")
+    
+    # 初始化手動資料暫存區 (Session State)
+    if "manual_data" not in st.session_state:
+        st.session_state.manual_data = pd.DataFrame(columns=[
+            "ลำดับเอกสาร", "วันที่แจ้งซ่อม", "ชื่อเครื่องจักร / อุปกรณ์", "สถานะใบแจ้งซ่อม", "ระยะเวลา (วัน)"
+        ])
+    
+    with st.form("manual_input_form", clear_on_submit=True):
+        doc_no = st.text_input("文件編號 / Doc No. / ลำดับเอกสาร", value="MANUAL-" + datetime.now().strftime("%y%m%d%H%M"))
+        repair_date = st.date_input("報修日期 / Date / วันที่แจ้งซ่อม")
+        repair_time = st.time_input("報修時間 / Time", value=datetime.now().time())
+        part_name = st.text_input("零件設備名稱 / Part Name / ชื่อเครื่องจักร")
+        
+        status_options = ["แล้วเสร็จ (Completed)", "อยู่ระหว่างดำเนินการ (In Progress)", "รอดำเนินการ (Pending)"]
+        status = st.selectbox("狀態 / Status / สถานะ", status_options)
+        duration = st.number_input("維修耗時(天) / Duration (Days)", min_value=0, value=1)
+        
+        submit_btn = st.form_submit_button("💾 儲存紀錄 (Save)")
+        
+        if submit_btn:
+            if part_name.strip() == "":
+                st.error("❌ 請輸入零件名稱！")
+            else:
+                # 格式化日期時間以符合後續解析
+                datetime_str = f"{repair_date.strftime('%d/%m/%Y')} {repair_time.strftime('%H:%M:%S')}"
+                
+                new_row = pd.DataFrame([{
+                    "ลำดับเอกสาร": doc_no,
+                    "วันที่แจ้งซ่อม": datetime_str,
+                    "ชื่อเครื่องจักร / อุปกรณ์": part_name.strip(),
+                    "สถานะใบแจ้งซ่อม": status,
+                    "ระยะเวลา (วัน)": duration,
+                    "Parsed_Date": pd.to_datetime(datetime_str, format="%d/%m/%Y %H:%M:%S")
+                }])
+                
+                st.session_state.manual_data = pd.concat([st.session_state.manual_data, new_row], ignore_index=True)
+                st.success(f"✅ 已成功新增：{part_name}")
+                st.rerun()
+
+    # 清除暫存按鈕
+    if not st.session_state.manual_data.empty:
+        if st.button("🗑️ 清空手動新增資料"):
+            st.session_state.manual_data = pd.DataFrame(columns=[
+                "ลำดับเอกสาร", "วันที่แจ้งซ่อม", "ชื่อเครื่องจักร / อุปกรณ์", "สถานะใบแจ้งซ่อม", "ระยะเวลา (วัน)"
+            ])
+            st.success("已清除所有手動新增的紀錄。")
+            st.rerun()
+
+
+# ==========================================
+# 3. 網頁主題外觀 CSS 注入
+# ==========================================
 if "🌙" in theme_mode:
     bg_color = "#0e1117"
     text_color = "#ffffff"
@@ -36,7 +92,6 @@ else:
 
 st.markdown(f"""
 <style>
-    /* 全網頁背景與文字 */
     .stApp {{
         background-color: {bg_color};
         color: {text_color};
@@ -63,8 +118,9 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
+
 # ==========================================
-# 3. 完整的三語字典（含完整泰文）
+# 4. 完整的三語字典
 # ==========================================
 LANG_DICT = {
     "繁體中文": {
@@ -130,8 +186,9 @@ LANG_DICT = {
 }
 L = LANG_DICT[selected_lang]
 
+
 # ==========================================
-# 4. 主畫面頂端專案目標
+# 5. 主畫面頂端專案目標
 # ==========================================
 st.title(L["title"])
 st.markdown(f"""
@@ -144,29 +201,50 @@ st.divider()
 
 
 # ==========================================
-# 5. 資料載入與背後自動分析
+# 6. 資料載入與整合邏輯
 # ==========================================
 @st.cache_data
 def load_data(file):
-    df = pd.read_excel(file)
-    if "ลำดับเอกสาร" in df.columns:
-        df = df[df["ลำดับเอกสาร"].notna()]
-        df = df[df["ลำดับเอกสาร"].astype(str).str.strip() != "(Running No)"]
-    if "ระยะเวลา (วัน)" in df.columns:
-        df["ระยะเวลา (วัน)"] = pd.to_numeric(df["ระยะเวลา (วัน)"], errors="coerce")
-    if "วันที่แจ้งซ่อม" in df.columns:
-        df["Parsed_Date"] = pd.to_datetime(df["วันที่แจ้งซ่อม"], format="%d/%m/%Y %H:%M:%S", errors='coerce')
-        mask = df["Parsed_Date"].isna()
-        df.loc[mask, "Parsed_Date"] = pd.to_datetime(df.loc[mask, "วันที่แจ้งซ่อม"], errors='coerce')
-    return df
+    df_raw = pd.read_excel(file)
+    if "ลำดับเอกสาร" in df_raw.columns:
+        df_raw = df_raw[df_raw["ลำดับเอกสาร"].notna()]
+        df_raw = df_raw[df_raw["ลำดับเอกสาร"].astype(str).str.strip() != "(Running No)"]
+    if "ระยะเวลา (วัน)" in df_raw.columns:
+        df_raw["ระยะเวลา (วัน)"] = pd.to_numeric(df_raw["ระยะเวลา (วัน)"], errors="coerce")
+    if "วันที่แจ้งซ่อม" in df_raw.columns:
+        df_raw["Parsed_Date"] = pd.to_datetime(df_raw["วันที่แจ้งซ่อม"], format="%d/%m/%Y %H:%M:%S", errors='coerce')
+        mask = df_raw["Parsed_Date"].isna()
+        df_raw.loc[mask, "Parsed_Date"] = pd.to_datetime(df_raw.loc[mask, "วันที่แจ้งซ่อม"], errors='coerce')
+    return df_raw
 
+
+# 整合上傳檔案與手動輸入資料
+df = None
 
 if uploaded_file is not None:
-    df = load_data(uploaded_file)
+    df_uploaded = load_data(uploaded_file)
+    if not st.session_state.manual_data.empty:
+        # 兩邊都有資料，進行合併
+        df = pd.concat([df_uploaded, st.session_state.manual_data], ignore_index=True)
+    else:
+        # 僅有上傳檔案
+        df = df_uploaded
+elif not st.session_state.manual_data.empty:
+    # 僅有手動新增的資料
+    df = st.session_state.manual_data
 
+
+# ==========================================
+# 7. 後端運算與分頁顯示（當有資料時）
+# ==========================================
+if df is not None:
     overdue_count = 0
     predict_data = []
     dynamic_pm_plan = []
+
+    # 確保 Parsed_Date 資料型態正確
+    if "Parsed_Date" in df.columns:
+        df["Parsed_Date"] = pd.to_datetime(df["Parsed_Date"], errors="coerce")
 
     if "ชื่อเครื่องจักร / อุปกรณ์" in df.columns and "Parsed_Date" in df.columns:
         counts_series = df["ชื่อเครื่องจักร / อุปกรณ์"].value_counts()
@@ -178,8 +256,11 @@ if uploaded_file is not None:
 
         for name, group in grouped:
             count = len(group)
+            # 計算平均壽命 (MTBF)
             mtbf = group["Parsed_Date"].diff().dt.days.dropna().mean() if count > 1 else 180
-            if pd.isna(mtbf) or mtbf <= 0: mtbf = 180
+            if pd.isna(mtbf) or mtbf <= 0: 
+                mtbf = 180
+            
             last_repair = group["Parsed_Date"].max()
             days_left = ((last_repair + pd.Timedelta(days=int(mtbf))) - datetime.now()).days
 
@@ -193,7 +274,7 @@ if uploaded_file is not None:
                 "🔮 預估下次更換剩餘天數": f"{days_left} 天"
             })
 
-            # 動態 PM 分類邏輯
+            # 動態 PM 分類邏輯 (中文與泰文適配)
             p_lower = str(name).lower()
             if count >= (max_failures * 0.7) or mtbf <= 30:
                 cycle = "每週 (Weekly)"
@@ -224,11 +305,10 @@ if uploaded_file is not None:
         top_part, top_count = "N/A", 0
         pm_df = pd.DataFrame()
 
-    uncompleted_count = len(df[~df["สถานะใบแจ้งซ่อม"].astype(str).str.contains("แล้วเสร็จ|Completed",
-                                                                               na=False)]) if "สถานะใบแจ้งซ่อม" in df.columns else 0
+    uncompleted_count = len(df[~df["สถานะใบแจ้งซ่อม"].astype(str).str.contains("แล้วเสร็จ|Completed", na=False)]) if "สถานะใบแจ้งซ่อม" in df.columns else 0
 
     # ==========================================
-    # 6. 三分頁架構
+    # 8. 三分頁架構顯示
     # ==========================================
     tab1, tab2, tab3 = st.tabs([L["tab_dashboard"], L["tab_prediction"], L["tab_pm_schedule"]])
 
@@ -299,6 +379,6 @@ if uploaded_file is not None:
         if not pm_df.empty:
             st.dataframe(pm_df, use_container_width=True, hide_index=True)
         else:
-            st.info("請先上傳檔案以生成動態點檢表。")
+            st.info("請先上傳檔案或手動新增資料以生成動態點檢表。")
 else:
-    st.info("💡 請在左側邊欄上傳您的維修數據 Excel 檔案。")
+    st.info("💡 請在左側邊欄上傳您的維修數據 Excel 檔案，或是利用手動表單新增第一筆紀錄。")
