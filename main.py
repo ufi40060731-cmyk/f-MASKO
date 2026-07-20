@@ -88,6 +88,7 @@ LANG_DICT = {
         "tab_dashboard": "📊 每月追蹤儀表板 (Dashboard)",
         "tab_prediction": "🔮 零件壽命預測機制 (Prediction)",
         "tab_pm_schedule": "📅 標準 PM 週期時程表 (PM Schedule)",
+        "tab_summary": "📝 重點整理分析 (Summary)",
         "kpi_alert": "🚨 建議近期更換/高風險零件",
         "kpi_hotspot": "🔥 頭號高頻故障殺手 (GEM 規律)",
         "kpi_backlog": "⏳ 處理中/未結案工單",
@@ -132,12 +133,38 @@ LANG_DICT = {
         "no_data": "暫無資料。",
         "upload_hint": "💡 請在左側邊欄上傳您的維修數據 Excel 檔案。",
         "deep_dive": "🔍 點擊展開原始運維歷史明細檔案 (Deep Dive)",
+        "summary_title": "📝 主管重點整理分析",
+        "summary_desc": "系統自動整理高風險零件、故障熱點、未結案工單與 PM 優先事項，讓主管快速掌握目前狀況。",
+        "summary_total_records": "歷史維修紀錄",
+        "summary_risk_parts": "30 天內需處理",
+        "summary_top_issue": "最高頻故障原因",
+        "summary_backlog_rate": "未結案率",
+        "summary_conclusion": "📌 系統重點結論",
+        "summary_priority_title": "🚨 優先處理清單",
+        "summary_no_risk": "目前沒有預估 30 天內需更換或已逾期的零件。",
+        "summary_pm_focus": "📅 PM 執行重點",
+        "summary_self_repair": "🧾 自行維修紀錄狀態",
+        "summary_no_issue": "無故障原因資料",
+        "summary_line_risk": "目前有 {count} 項零件預估於 30 天內到期或已逾期，應列為優先處理。",
+        "summary_line_hotspot": "更換頻率最高的設備／零件為「{part}」，歷史共 {count} 次。",
+        "summary_line_reason": "最常見的故障原因為「{reason}」，共 {count} 筆。",
+        "summary_line_backlog": "未結案工單共 {count} 件，占全部紀錄 {rate:.1f}%。",
+        "summary_line_pm": "建議 PM 配置：每週 {weekly} 項、每月 {monthly} 項、每季 {quarterly} 項、每半年 {semi} 項。",
+        "summary_line_self": "自行維修紀錄共 {total} 筆，其中已完成 {completed} 筆、待追蹤 {pending} 筆。",
+        "summary_col_status": "風險狀態",
+        "summary_col_part": "設備／零件",
+        "summary_col_count": "歷史次數",
+        "summary_col_mtbf": "平均週期 (天)",
+        "summary_col_days": "距預估更換 (天)",
+        "summary_overdue": "🔴 已逾期",
+        "summary_due_soon": "🟠 30 天內到期",
     },
     "English": {
         "title": "🛠️ F-mask Machine PM & Part Prediction Dashboard",
         "tab_dashboard": "📊 Monthly Tracking Dashboard",
         "tab_prediction": "🔮 Part Prediction Mechanism",
         "tab_pm_schedule": "📅 Master PM Schedule Plan",
+        "tab_summary": "📝 Key Summary Analysis",
         "kpi_alert": "🚨 High Risk / Near-Overdue Parts",
         "kpi_hotspot": "🔥 Top Failure Hotspot",
         "kpi_backlog": "⏳ Uncompleted Work Orders",
@@ -182,12 +209,38 @@ LANG_DICT = {
         "no_data": "No data available.",
         "upload_hint": "💡 Upload the maintenance Excel file from the left sidebar.",
         "deep_dive": "🔍 Expand Raw Maintenance History (Deep Dive)",
+        "summary_title": "📝 Management Key Summary",
+        "summary_desc": "The system automatically summarizes high-risk parts, failure hotspots, open work orders, and PM priorities for quick review.",
+        "summary_total_records": "Maintenance Records",
+        "summary_risk_parts": "Due Within 30 Days",
+        "summary_top_issue": "Top Failure Cause",
+        "summary_backlog_rate": "Open-Order Rate",
+        "summary_conclusion": "📌 Key Findings",
+        "summary_priority_title": "🚨 Priority Action List",
+        "summary_no_risk": "No parts are currently overdue or predicted to require replacement within 30 days.",
+        "summary_pm_focus": "📅 PM Execution Focus",
+        "summary_self_repair": "🧾 Self-Repair Record Status",
+        "summary_no_issue": "No failure-cause data",
+        "summary_line_risk": "{count} parts are overdue or predicted to be due within 30 days and should be prioritized.",
+        "summary_line_hotspot": "The most frequently replaced machine/part is “{part}”, with {count} historical records.",
+        "summary_line_reason": "The most common failure cause is “{reason}”, appearing in {count} records.",
+        "summary_line_backlog": "There are {count} open work orders, representing {rate:.1f}% of all records.",
+        "summary_line_pm": "Recommended PM allocation: weekly {weekly}, monthly {monthly}, quarterly {quarterly}, and semi-annually {semi} items.",
+        "summary_line_self": "There are {total} self-repair records: {completed} completed and {pending} pending/under monitoring.",
+        "summary_col_status": "Risk Status",
+        "summary_col_part": "Machine / Part",
+        "summary_col_count": "Historical Count",
+        "summary_col_mtbf": "Average Cycle (Days)",
+        "summary_col_days": "Days to Predicted Change",
+        "summary_overdue": "🔴 Overdue",
+        "summary_due_soon": "🟠 Due Within 30 Days",
     },
     "ภาษาไทย": {
         "title": "🛠️ แดชบอร์ดซ่อมบำรุงเชิงป้องกันและคาดการณ์อะไหล่ F-mask",
         "tab_dashboard": "📊 แดชบอร์ดติดตามรายเดือน",
         "tab_prediction": "🔮 กลไกการคาดการณ์อายุอะไหล่",
         "tab_pm_schedule": "📅 แผนตาราง PM มาตรฐาน",
+        "tab_summary": "📝 สรุปและวิเคราะห์ประเด็นสำคัญ",
         "kpi_alert": "🚨 อะไหล่ความเสี่ยงสูง/ใกล้ถึงกำหนด",
         "kpi_hotspot": "🔥 จุดเสียบ่อยที่สุด",
         "kpi_backlog": "⏳ ใบงานที่ยังไม่เสร็จ",
@@ -232,6 +285,31 @@ LANG_DICT = {
         "no_data": "ยังไม่มีข้อมูล",
         "upload_hint": "💡 โปรดอัปโหลดไฟล์ Excel จากแถบด้านซ้าย",
         "deep_dive": "🔍 เปิดดูประวัติการซ่อมทั้งหมด (Deep Dive)",
+        "summary_title": "📝 สรุปประเด็นสำคัญสำหรับผู้บริหาร",
+        "summary_desc": "ระบบสรุปอะไหล่ความเสี่ยงสูง จุดเสียบ่อย งานที่ยังไม่ปิด และลำดับความสำคัญของ PM โดยอัตโนมัติ",
+        "summary_total_records": "ประวัติการซ่อม",
+        "summary_risk_parts": "ต้องจัดการภายใน 30 วัน",
+        "summary_top_issue": "สาเหตุเสียที่พบบ่อยที่สุด",
+        "summary_backlog_rate": "อัตรางานค้าง",
+        "summary_conclusion": "📌 ข้อสรุปสำคัญ",
+        "summary_priority_title": "🚨 รายการที่ต้องดำเนินการก่อน",
+        "summary_no_risk": "ขณะนี้ไม่มีอะไหล่ที่เกินกำหนดหรือคาดว่าต้องเปลี่ยนภายใน 30 วัน",
+        "summary_pm_focus": "📅 จุดเน้นในการทำ PM",
+        "summary_self_repair": "🧾 สถานะบันทึกการซ่อมด้วยตนเอง",
+        "summary_no_issue": "ไม่มีข้อมูลสาเหตุการเสีย",
+        "summary_line_risk": "มีอะไหล่ {count} รายการที่เกินกำหนดหรือคาดว่าจะถึงกำหนดภายใน 30 วัน ควรดำเนินการก่อน",
+        "summary_line_hotspot": "เครื่องจักร/อะไหล่ที่เปลี่ยนบ่อยที่สุดคือ “{part}” รวม {count} ครั้ง",
+        "summary_line_reason": "สาเหตุการเสียที่พบบ่อยที่สุดคือ “{reason}” จำนวน {count} รายการ",
+        "summary_line_backlog": "มีใบงานที่ยังไม่ปิด {count} รายการ คิดเป็น {rate:.1f}% ของทั้งหมด",
+        "summary_line_pm": "ข้อเสนอ PM: รายสัปดาห์ {weekly} รายการ รายเดือน {monthly} รายการ รายไตรมาส {quarterly} รายการ และทุกครึ่งปี {semi} รายการ",
+        "summary_line_self": "บันทึกการซ่อมด้วยตนเองทั้งหมด {total} รายการ เสร็จแล้ว {completed} รายการ และรอติดตาม {pending} รายการ",
+        "summary_col_status": "สถานะความเสี่ยง",
+        "summary_col_part": "เครื่องจักร / อะไหล่",
+        "summary_col_count": "จำนวนครั้งในอดีต",
+        "summary_col_mtbf": "รอบเฉลี่ย (วัน)",
+        "summary_col_days": "วันถึงกำหนดเปลี่ยน",
+        "summary_overdue": "🔴 เกินกำหนด",
+        "summary_due_soon": "🟠 ถึงกำหนดภายใน 30 วัน",
     },
 }
 L = LANG_DICT[selected_lang]
@@ -297,6 +375,7 @@ if uploaded_file is not None:
     overdue_count = 0
     predict_data = []
     dynamic_pm_plan = []
+    summary_risk_rows = []
 
     if "ชื่อเครื่องจักร / อุปกรณ์" in df.columns and "Parsed_Date" in df.columns:
         counts_series = df["ชื่อเครื่องจักร / อุปกรณ์"].value_counts()
@@ -325,6 +404,14 @@ if uploaded_file is not None:
 
             if days_left <= 30:
                 overdue_count += 1
+                summary_risk_rows.append(
+                    {
+                        "name": name,
+                        "count": count,
+                        "mtbf": round(mtbf, 1),
+                        "days_left": days_left,
+                    }
+                )
 
             predict_data.append(
                 {
@@ -398,13 +485,14 @@ if uploaded_file is not None:
         uncompleted_count = 0
 
     # ==========================================
-    # 6. 三大分頁架構
+    # 6. 四大分頁架構
     # ==========================================
-    tab1, tab2, tab3 = st.tabs(
+    tab1, tab2, tab3, tab4 = st.tabs(
         [
             L["tab_dashboard"],
             L["tab_prediction"],
             L["tab_pm_schedule"],
+            L["tab_summary"],
         ]
     )
 
@@ -610,5 +698,138 @@ if uploaded_file is not None:
             )
         else:
             st.info(L["no_data"])
+
+    # --- TAB 4: 重點整理分析 ---
+    with tab4:
+        st.markdown(f"### {L['summary_title']}")
+        st.caption(L["summary_desc"])
+
+        total_records = len(df)
+        backlog_rate = (uncompleted_count / total_records * 100) if total_records else 0.0
+
+        if "อาการเสีย / ปัญหา" in df.columns:
+            issue_series = (
+                df["อาการเสีย / ปัญหา"]
+                .dropna()
+                .astype(str)
+                .str.strip()
+            )
+            issue_series = issue_series[issue_series != ""]
+            issue_counts_all = issue_series.value_counts()
+        else:
+            issue_counts_all = pd.Series(dtype="int64")
+
+        if not issue_counts_all.empty:
+            top_issue = str(issue_counts_all.index[0])
+            top_issue_count = int(issue_counts_all.iloc[0])
+        else:
+            top_issue = L["summary_no_issue"]
+            top_issue_count = 0
+
+        s_col1, s_col2, s_col3, s_col4 = st.columns(4)
+        with s_col1:
+            st.metric(L["summary_total_records"], f"{total_records} 筆")
+        with s_col2:
+            st.metric(L["summary_risk_parts"], f"{overdue_count} 項")
+        with s_col3:
+            st.metric(
+                L["summary_top_issue"],
+                top_issue,
+                help=f"{top_issue_count} records",
+            )
+        with s_col4:
+            st.metric(L["summary_backlog_rate"], f"{backlog_rate:.1f}%")
+
+        total_repairs = len(st.session_state.repair_logs)
+        completed_repairs = sum(
+            1
+            for item in st.session_state.repair_logs
+            if str(item.get("status", "")).startswith("✅")
+        )
+        pending_repairs = total_repairs - completed_repairs
+
+        cycle_counts = (
+            pm_df["📅 建議點檢週期"].value_counts()
+            if not pm_df.empty
+            else pd.Series(dtype="int64")
+        )
+        weekly_count = int(cycle_counts.get("每週 (Weekly)", 0))
+        monthly_count = int(cycle_counts.get("每月 (Monthly)", 0))
+        quarterly_count = int(cycle_counts.get("每季 (Quarterly)", 0))
+        semi_count = int(cycle_counts.get("每半年 (Semi-Annually)", 0))
+
+        st.markdown(f"#### {L['summary_conclusion']}")
+        conclusion_lines = [
+            L["summary_line_risk"].format(count=overdue_count),
+            L["summary_line_hotspot"].format(part=top_part, count=top_count),
+            L["summary_line_reason"].format(
+                reason=top_issue, count=top_issue_count
+            ),
+            L["summary_line_backlog"].format(
+                count=uncompleted_count, rate=backlog_rate
+            ),
+        ]
+        conclusion_html = "".join(
+            f"<div>• {html.escape(line)}</div>" for line in conclusion_lines
+        )
+        st.markdown(
+            f'<div class="summary-box">{conclusion_html}</div>',
+            unsafe_allow_html=True,
+        )
+
+        left_summary, right_summary = st.columns(2)
+        with left_summary:
+            st.markdown(f"#### {L['summary_pm_focus']}")
+            st.info(
+                L["summary_line_pm"].format(
+                    weekly=weekly_count,
+                    monthly=monthly_count,
+                    quarterly=quarterly_count,
+                    semi=semi_count,
+                )
+            )
+
+        with right_summary:
+            st.markdown(f"#### {L['summary_self_repair']}")
+            st.info(
+                L["summary_line_self"].format(
+                    total=total_repairs,
+                    completed=completed_repairs,
+                    pending=pending_repairs,
+                )
+            )
+
+        st.markdown(f"#### {L['summary_priority_title']}")
+        if summary_risk_rows:
+            risk_df = pd.DataFrame(summary_risk_rows).sort_values(
+                "days_left", ascending=True
+            )
+            risk_df[L["summary_col_status"]] = risk_df["days_left"].apply(
+                lambda value: (
+                    L["summary_overdue"]
+                    if value < 0
+                    else L["summary_due_soon"]
+                )
+            )
+            risk_df = risk_df.rename(
+                columns={
+                    "name": L["summary_col_part"],
+                    "count": L["summary_col_count"],
+                    "mtbf": L["summary_col_mtbf"],
+                    "days_left": L["summary_col_days"],
+                }
+            )
+            risk_df = risk_df[
+                [
+                    L["summary_col_status"],
+                    L["summary_col_part"],
+                    L["summary_col_count"],
+                    L["summary_col_mtbf"],
+                    L["summary_col_days"],
+                ]
+            ]
+            st.dataframe(risk_df, use_container_width=True, hide_index=True)
+        else:
+            st.success(L["summary_no_risk"])
 else:
     st.info(L["upload_hint"])
